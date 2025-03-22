@@ -18,7 +18,7 @@ export default function Index() {
       image: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=3270&auto=format&fit=crop',
       category: 'Environment',
       readTime: '5 min read',
-      type: 'article'
+      type: 'article' as const
     },
     {
       title: 'How to Prepare Your Devices for Recycling',
@@ -26,7 +26,7 @@ export default function Index() {
       image: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=3201&auto=format&fit=crop',
       category: 'Guides',
       readTime: '3 min read',
-      type: 'guide'
+      type: 'guide' as const
     },
     {
       title: 'Inside an E-Waste Recycling Facility',
@@ -34,7 +34,7 @@ export default function Index() {
       image: 'https://images.unsplash.com/photo-1611284446314-60a58ac0dade?q=80&w=3270&auto=format&fit=crop',
       category: 'Behind the Scenes',
       readTime: '8 min watch',
-      type: 'video'
+      type: 'video' as const
     }
   ];
 

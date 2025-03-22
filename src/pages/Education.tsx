@@ -9,8 +9,19 @@ import { FileText, Film, BookOpen, Search } from 'lucide-react';
 import EducationCard from '@/components/EducationCard';
 import { Input } from '@/components/ui/input';
 
-// Mock data for educational content
-const educationItems = [
+// Define a type for our education item to ensure type safety
+type EducationItem = {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  category: string;
+  readTime: string;
+  type: 'article' | 'video' | 'guide';
+};
+
+// Mock data for educational content with proper typing
+const educationItems: EducationItem[] = [
   {
     id: 1,
     title: 'The Environmental Impact of E-Waste',
@@ -97,7 +108,7 @@ const educationItems = [
 const categories = ['All', 'Environment', 'Guides', 'Security', 'Policy', 'DIY', 'Business', 'Education'];
 
 export default function Education() {
-  const [activeTab, setActiveTab] = useState('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'article' | 'video' | 'guide'>('all');
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -136,7 +147,7 @@ export default function Education() {
               />
             </div>
 
-            <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'all' | 'article' | 'video' | 'guide')}>
               <TabsList className="grid grid-cols-4 mb-6">
                 <TabsTrigger value="all" className="flex items-center gap-2">
                   All Resources

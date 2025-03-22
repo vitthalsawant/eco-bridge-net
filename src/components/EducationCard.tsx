@@ -11,6 +11,7 @@ interface EducationCardProps {
   readTime: string;
   type: 'article' | 'video' | 'guide';
   className?: string;
+  id?: number;
 }
 
 export default function EducationCard({

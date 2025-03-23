@@ -1,17 +1,33 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
+import { AlertTriangle } from 'lucide-react';
 
 const SimpleAuth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [needsVerification, setNeedsVerification] = useState(false);
+
+  useEffect(() => {
+    // Check URL for error parameters that might indicate verification issues
+    const url = new URL(window.location.href);
+    const errorDescription = url.searchParams.get('error_description');
+    if (errorDescription?.includes('Email not confirmed')) {
+      setNeedsVerification(true);
+      toast({
+        title: "Email verification required",
+        description: "Please check your inbox and verify your email before logging in.",
+        variant: "destructive",
+      });
+    }
+  }, []);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +36,7 @@ const SimpleAuth = () => {
     try {
       if (isSignUp) {
         // Sign up
-        const { error } = await supabase.auth.signUp({
+        const { error, data } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -30,9 +46,10 @@ const SimpleAuth = () => {
 
         if (error) throw error;
         
+        setNeedsVerification(true);
         toast({
           title: "Account created successfully!",
-          description: "You can now sign in with your new account.",
+          description: "Please check your email to verify your account before signing in.",
         });
         
         // Switch to sign in mode after successful signup
@@ -44,7 +61,26 @@ const SimpleAuth = () => {
           password,
         });
 
-        if (error) throw error;
+        if (error) {
+          if (error.message.includes('Invalid login credentials') && email) {
+            // Check if the user exists but needs verification
+            const { data } = await supabase.auth.signInWithOtp({
+              email,
+              options: {
+                shouldCreateUser: false,
+              }
+            });
+            
+            if (data) {
+              setNeedsVerification(true);
+              throw new Error('Email not verified. We sent a new verification email to your inbox.');
+            } else {
+              throw error;
+            }
+          } else {
+            throw error;
+          }
+        }
         
         toast({
           title: "Login successful",
@@ -62,6 +98,40 @@ const SimpleAuth = () => {
     }
   };
 
+  const handleResendVerification = async () => {
+    if (!email) {
+      toast({
+        title: "Email required",
+        description: "Please enter your email address to resend verification",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Verification email sent",
+        description: "Please check your inbox for the verification link",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Could not resend verification email",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
@@ -70,6 +140,26 @@ const SimpleAuth = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
+        {needsVerification && (
+          <div className="bg-amber-50 border border-amber-200 rounded-md p-3 mb-4 flex items-start gap-2">
+            <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-amber-800">Email verification required</p>
+              <p className="text-xs text-amber-700 mt-1">
+                Please check your inbox and verify your email address before logging in.
+              </p>
+              <Button 
+                variant="link" 
+                className="text-xs p-0 h-auto mt-1 text-amber-800" 
+                onClick={handleResendVerification}
+                disabled={loading}
+              >
+                Resend verification email
+              </Button>
+            </div>
+          </div>
+        )}
+
         <form onSubmit={handleAuth} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>

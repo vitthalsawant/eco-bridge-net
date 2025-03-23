@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { AlertTriangle } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const SimpleAuth = () => {
   const [email, setEmail] = useState('');
@@ -14,6 +15,7 @@ const SimpleAuth = () => {
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [needsVerification, setNeedsVerification] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   useEffect(() => {
     // Check URL for error parameters that might indicate verification issues
@@ -32,6 +34,7 @@ const SimpleAuth = () => {
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setAuthError(null);
 
     try {
       if (isSignUp) {
@@ -44,7 +47,13 @@ const SimpleAuth = () => {
           },
         });
 
-        if (error) throw error;
+        if (error) {
+          if (error.message.includes('User already registered')) {
+            throw new Error('An account with this email already exists. Please sign in instead.');
+          } else {
+            throw error;
+          }
+        }
         
         setNeedsVerification(true);
         toast({
@@ -62,21 +71,33 @@ const SimpleAuth = () => {
         });
 
         if (error) {
-          if (error.message.includes('Invalid login credentials') && email) {
+          console.error("Auth error:", error);
+          
+          if (error.message.includes('Invalid login credentials')) {
             // Check if the user exists but needs verification
-            const { data } = await supabase.auth.signInWithOtp({
+            const { data, error: checkError } = await supabase.auth.signInWithOtp({
               email,
               options: {
                 shouldCreateUser: false,
               }
             });
             
-            if (data) {
+            if (checkError) {
+              if (checkError.message.includes('Email not confirmed')) {
+                setNeedsVerification(true);
+                throw new Error('Your email has not been verified. Please check your inbox or request a new verification email.');
+              } else {
+                throw new Error('Invalid login credentials. Please check your email and password.');
+              }
+            } else if (data) {
               setNeedsVerification(true);
               throw new Error('Email not verified. We sent a new verification email to your inbox.');
             } else {
-              throw error;
+              throw new Error('Invalid login credentials. Please check your email and password.');
             }
+          } else if (error.message.includes('Email not confirmed')) {
+            setNeedsVerification(true);
+            throw new Error('Your email has not been verified. Please check your inbox or request a new verification email.');
           } else {
             throw error;
           }
@@ -88,6 +109,8 @@ const SimpleAuth = () => {
         });
       }
     } catch (error: any) {
+      console.error("Authentication error:", error);
+      setAuthError(error.message || "An error occurred during authentication");
       toast({
         title: "Authentication error",
         description: error.message || "An error occurred during authentication",
@@ -140,6 +163,14 @@ const SimpleAuth = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
+        {authError && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{authError}</AlertDescription>
+          </Alert>
+        )}
+        
         {needsVerification && (
           <div className="bg-amber-50 border border-amber-200 rounded-md p-3 mb-4 flex items-start gap-2">
             <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5 flex-shrink-0" />

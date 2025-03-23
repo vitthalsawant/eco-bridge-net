@@ -1,10 +1,11 @@
 
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, User, LogIn } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
+import UserMenu from '@/components/UserMenu';
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -116,15 +117,8 @@ export default function Navbar() {
                 </li>
               ))}
             </ul>
-            <div className="flex items-center ml-6 space-x-3">
-              <Button variant="outline" size="sm" className="h-9">
-                <LogIn className="h-4 w-4 mr-2" />
-                Sign in
-              </Button>
-              <Button size="sm" className="h-9">
-                <User className="h-4 w-4 mr-2" />
-                Sign up
-              </Button>
+            <div className="flex items-center ml-6">
+              <UserMenu />
             </div>
           </div>
 
@@ -187,19 +181,12 @@ export default function Navbar() {
                 </li>
               ))}
             </ul>
-            <div className="mt-4 pt-4 border-t border-gray-200 flex flex-col space-y-3 px-3">
-              <Button variant="outline" className="justify-center">
-                <LogIn className="h-4 w-4 mr-2" />
-                Sign in
-              </Button>
-              <Button className="justify-center">
-                <User className="h-4 w-4 mr-2" />
-                Sign up
-              </Button>
+            <div className="mt-4 pt-4 border-t border-gray-200 px-3">
+              <UserMenu />
             </div>
           </div>
         )}
       </Container>
     </header>
   );
-}
+};

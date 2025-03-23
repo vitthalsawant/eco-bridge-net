@@ -9,6 +9,137 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      activities: {
+        Row: {
+          activity_type: string
+          created_at: string
+          description: string | null
+          id: string
+          related_id: string | null
+          status: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          activity_type: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          related_id?: string | null
+          status: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          activity_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          related_id?: string | null
+          status?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      devices: {
+        Row: {
+          created_at: string
+          description: string | null
+          device_name: string
+          device_type: string
+          id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          device_name: string
+          device_type: string
+          id?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          device_name?: string
+          device_type?: string
+          id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      donations: {
+        Row: {
+          created_at: string
+          device_id: string
+          donation_date: string
+          id: string
+          recipient: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_id: string
+          donation_date: string
+          id?: string
+          recipient: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          device_id?: string
+          donation_date?: string
+          id?: string
+          recipient?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "donations_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pickups: {
+        Row: {
+          address: string
+          created_at: string
+          devices: string[]
+          id: string
+          pickup_date: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          address: string
+          created_at?: string
+          devices?: string[]
+          id?: string
+          pickup_date: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          address?: string
+          created_at?: string
+          devices?: string[]
+          id?: string
+          pickup_date?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

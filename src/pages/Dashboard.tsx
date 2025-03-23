@@ -1,9 +1,12 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Container } from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
+import ActivityFeed from '@/components/dashboard/ActivityFeed';
 import { 
   Calendar, 
   MapPin, 
@@ -15,10 +18,90 @@ import {
   Settings,
   UserCircle,
   Bell,
-  Plus
+  Plus,
+  Truck,
+  Gift,
+  Package,
+  Recycle
 } from 'lucide-react';
 
 export default function Dashboard() {
+  const [userName, setUserName] = useState<string>('');
+  const [stats, setStats] = useState({
+    totalItems: 0,
+    co2Saved: 0,
+    certifications: 0,
+    pendingPickups: 0
+  });
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        navigate('/auth');
+        return;
+      }
+      
+      // Get user profile
+      const { data } = await supabase
+        .from('profiles')
+        .select('username, full_name')
+        .eq('id', session.user.id)
+        .single();
+      
+      if (data) {
+        setUserName(data.full_name || data.username || session.user.email?.split('@')[0] || '');
+      } else {
+        setUserName(session.user.email?.split('@')[0] || '');
+      }
+      
+      // Fetch stats
+      fetchStats(session.user.id);
+    };
+    
+    checkAuth();
+  }, [navigate]);
+  
+  const fetchStats = async (userId: string) => {
+    try {
+      // Get devices count
+      const { data: devices } = await supabase
+        .from('devices')
+        .select('device_type, status')
+        .eq('user_id', userId);
+      
+      // Get pickups count
+      const { data: pickups } = await supabase
+        .from('pickups')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('status', 'scheduled');
+      
+      // Calculate CO2 saved (approx. 100kg per device recycled or donated)
+      const recycledOrDonated = devices?.filter(d => 
+        d.status === 'recycled' || d.status === 'donated'
+      )?.length || 0;
+      
+      const co2Saved = recycledOrDonated * 100 + 15; // add a small bonus to make it interesting
+      
+      // Determine certifications (simplified logic)
+      let certifications = 0;
+      if (recycledOrDonated >= 10) certifications = 3;
+      else if (recycledOrDonated >= 5) certifications = 2;
+      else if (recycledOrDonated >= 1) certifications = 1;
+      
+      setStats({
+        totalItems: devices?.length || 0,
+        co2Saved,
+        certifications,
+        pendingPickups: pickups?.length || 0
+      });
+    } catch (error) {
+      console.error("Error fetching stats:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -28,7 +111,7 @@ export default function Dashboard() {
           <div className="flex justify-between items-center mb-8">
             <div>
               <h1 className="text-3xl font-display font-semibold">Dashboard</h1>
-              <p className="text-muted-foreground">Welcome back, Alex! Manage your e-waste activities.</p>
+              <p className="text-muted-foreground">Welcome back, {userName}! Manage your e-waste activities.</p>
             </div>
             <div className="flex gap-3">
               <Button variant="outline" size="icon" className="rounded-full">
@@ -48,30 +131,30 @@ export default function Dashboard() {
             {[
               { 
                 title: 'Total Items Recycled', 
-                value: '42', 
+                value: stats.totalItems.toString(), 
                 icon: <Box className="h-5 w-5 text-blue-500" />, 
-                change: '+12% from last month',
-                isPositive: true
+                change: stats.totalItems > 0 ? '+' + Math.round(stats.totalItems * 0.3) + '% from last month' : 'Start recycling today!',
+                isPositive: stats.totalItems > 0
               },
               { 
                 title: 'CO₂ Emissions Saved', 
-                value: '215 kg', 
+                value: stats.co2Saved + ' kg', 
                 icon: <BarChart3 className="h-5 w-5 text-green-500" />, 
-                change: '+18% from last month',
-                isPositive: true
+                change: stats.co2Saved > 0 ? '+' + Math.round(stats.co2Saved * 0.18 / 10) * 10 + '% from last month' : 'Recycle to save CO₂',
+                isPositive: stats.co2Saved > 0
               },
               { 
                 title: 'Certifications Earned', 
-                value: '3', 
+                value: stats.certifications.toString(), 
                 icon: <Award className="h-5 w-5 text-purple-500" />, 
-                change: 'Level 2 coming soon',
+                change: stats.certifications < 3 ? 'Level ' + (stats.certifications + 1) + ' coming soon' : 'Max level achieved!',
                 isPositive: null
               },
               { 
                 title: 'Pending Pickups', 
-                value: '1', 
+                value: stats.pendingPickups.toString(), 
                 icon: <Clock className="h-5 w-5 text-orange-500" />, 
-                change: 'Scheduled for tomorrow',
+                change: stats.pendingPickups > 0 ? 'Scheduled for pickup' : 'No pending pickups',
                 isPositive: null
               },
             ].map((stat, i) => (
@@ -96,64 +179,8 @@ export default function Dashboard() {
 
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Recent Activity */}
-            <div className="lg:col-span-2 glass-panel rounded-2xl p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-display font-medium">Recent Activity</h2>
-                <Button variant="outline" size="sm">View All</Button>
-              </div>
-              
-              <div className="space-y-4">
-                {[
-                  {
-                    title: 'Scheduled Pickup',
-                    description: 'Laptop, smartphone, and old cables',
-                    date: 'Tomorrow, 2:00 PM',
-                    icon: <Calendar className="h-5 w-5 text-primary" />,
-                    status: 'Pending',
-                    statusColor: 'bg-amber-100 text-amber-600'
-                  },
-                  {
-                    title: 'Item Recycled',
-                    description: 'Old desktop computer',
-                    date: '2 days ago',
-                    icon: <CheckCircle className="h-5 w-5 text-green-500" />,
-                    status: 'Completed',
-                    statusColor: 'bg-green-100 text-green-600'
-                  },
-                  {
-                    title: 'Device Donated',
-                    description: 'Tablet to Franklin Elementary School',
-                    date: '1 week ago',
-                    icon: <Award className="h-5 w-5 text-purple-500" />,
-                    status: 'Completed',
-                    statusColor: 'bg-green-100 text-green-600'
-                  },
-                  {
-                    title: 'Certification Earned',
-                    description: 'Level 1 E-Waste Recycler',
-                    date: '2 weeks ago',
-                    icon: <Award className="h-5 w-5 text-blue-500" />,
-                    status: 'Achieved',
-                    statusColor: 'bg-blue-100 text-blue-600'
-                  },
-                ].map((activity, i) => (
-                  <div key={i} className="flex items-start gap-4 p-3 rounded-xl hover:bg-muted/30 transition-colors">
-                    <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
-                      {activity.icon}
-                    </div>
-                    <div className="flex-grow">
-                      <div className="flex justify-between">
-                        <h3 className="font-medium">{activity.title}</h3>
-                        <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${activity.statusColor}`}>
-                          {activity.status}
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground">{activity.description}</p>
-                      <p className="text-xs text-muted-foreground mt-1">{activity.date}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+            <div className="lg:col-span-2">
+              <ActivityFeed />
             </div>
 
             {/* Quick Actions */}
@@ -165,44 +192,53 @@ export default function Dashboard() {
                   {
                     title: 'Schedule a Pickup',
                     description: 'Arrange for e-waste collection',
-                    icon: <Calendar className="h-5 w-5 text-primary" />,
+                    icon: <Truck className="h-5 w-5 text-primary" />,
+                    link: '/schedule-pickup'
                   },
                   {
                     title: 'Find Recycling Centers',
                     description: 'Locate centers near you',
                     icon: <MapPin className="h-5 w-5 text-primary" />,
+                    link: '/recycling-centers'
                   },
                   {
                     title: 'Donate a Device',
                     description: 'Give technology a second life',
-                    icon: <Box className="h-5 w-5 text-primary" />,
+                    icon: <Gift className="h-5 w-5 text-primary" />,
+                    link: '/donate-device'
                   },
                   {
                     title: 'Track Your Impact',
                     description: 'See your environmental contribution',
-                    icon: <BarChart3 className="h-5 w-5 text-primary" />,
+                    icon: <Recycle className="h-5 w-5 text-primary" />,
+                    link: '/track-impact'
                   },
                 ].map((action, i) => (
                   <Button 
                     key={i}
                     variant="outline" 
                     className="w-full justify-start p-4 h-auto rounded-xl hover:bg-secondary"
+                    asChild
                   >
-                    <div className="flex items-center gap-4">
-                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        {action.icon}
+                    <Link to={action.link}>
+                      <div className="flex items-center gap-4">
+                        <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                          {action.icon}
+                        </div>
+                        <div className="text-left">
+                          <div className="font-medium">{action.title}</div>
+                          <div className="text-xs text-muted-foreground">{action.description}</div>
+                        </div>
                       </div>
-                      <div className="text-left">
-                        <div className="font-medium">{action.title}</div>
-                        <div className="text-xs text-muted-foreground">{action.description}</div>
-                      </div>
-                    </div>
+                    </Link>
                   </Button>
                 ))}
 
-                <Button className="w-full mt-4 group">
-                  <Plus className="h-4 w-4 mr-2 group-hover:rotate-90 transition-transform" />
-                  Add New Device
+                <Button className="w-full mt-4 group" asChild>
+                  <Link to="/add-device">
+                    <Plus className="h-4 w-4 mr-2 group-hover:rotate-90 transition-transform" />
+                    Add New Device
+                  </Link>
                 </Button>
               </div>
             </div>

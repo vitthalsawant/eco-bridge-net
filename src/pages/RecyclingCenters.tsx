@@ -5,77 +5,14 @@ import Footer from '@/components/Footer';
 import { Container } from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { MapPin, Filter, Search, Navigation, Phone, Clock, CheckCircle, Award } from 'lucide-react';
-
-// Mock data for recycling centers in Mumbai
-const centers = [
-  {
-    id: 1,
-    name: 'Mumbai E-Waste Recyclers',
-    address: '42 Andheri East, Mumbai, Maharashtra 400069',
-    phone: '(022) 2835-6789',
-    hours: 'Mon-Fri: 9am-6pm, Sat: 10am-4pm',
-    distance: '1.5 km',
-    certifications: ['MPCB Certified', 'ISO 14001'],
-    acceptedItems: ['Computers', 'Phones', 'Tablets', 'TVs', 'Batteries'],
-    rating: 4.7,
-    reviews: 132
-  },
-  {
-    id: 2,
-    name: 'Green Mumbai Recycling',
-    address: '78 Parel, Lower Parel, Mumbai, Maharashtra 400012',
-    phone: '(022) 2492-3456',
-    hours: 'Mon-Sat: 8am-7pm',
-    distance: '3.2 km',
-    certifications: ['CPCB Authorized'],
-    acceptedItems: ['All Electronics', 'Batteries', 'Cables', 'Light Bulbs'],
-    rating: 4.5,
-    reviews: 96
-  },
-  {
-    id: 3,
-    name: 'EcoTech Solutions',
-    address: '105 Worli, Mumbai, Maharashtra 400018',
-    phone: '(022) 2438-9012',
-    hours: 'Mon-Fri: 9am-5pm, Sat-Sun: 10am-3pm',
-    distance: '4.8 km',
-    certifications: ['MPCB Certified', 'E-Waste Handler'],
-    acceptedItems: ['Computers', 'Mobiles', 'Printers', 'Batteries'],
-    rating: 4.8,
-    reviews: 185
-  },
-  {
-    id: 4,
-    name: 'Dharavi Recycling Center',
-    address: '23 Dharavi, Mumbai, Maharashtra 400017',
-    phone: '(022) 2513-7890',
-    hours: 'Mon-Sat: 8am-8pm',
-    distance: '6.3 km',
-    certifications: ['Community Certified'],
-    acceptedItems: ['All Electronics', 'Household Appliances'],
-    rating: 4.2,
-    reviews: 67
-  },
-  {
-    id: 5,
-    name: 'Navi Mumbai E-Waste Management',
-    address: '56 Vashi, Navi Mumbai, Maharashtra 400703',
-    phone: '(022) 2789-4561',
-    hours: 'Mon-Fri: 9am-6pm',
-    distance: '12.7 km',
-    certifications: ['MPCB Certified', 'ISO 9001', 'ISO 14001'],
-    acceptedItems: ['Computers', 'Servers', 'Networking Equipment', 'Industrial Electronics'],
-    rating: 4.9,
-    reviews: 204
-  }
-];
+import { MapPin, Filter, Search, Navigation, Phone, Clock, CheckCircle, Award, Info } from 'lucide-react';
+import { recyclingCenters } from '@/data/education-data';
 
 export default function RecyclingCenters() {
-  const [selectedCenter, setSelectedCenter] = useState(centers[0]);
+  const [selectedCenter, setSelectedCenter] = useState(recyclingCenters[0]);
   const [searchTerm, setSearchTerm] = useState('');
   
-  const filteredCenters = centers.filter(center => 
+  const filteredCenters = recyclingCenters.filter(center => 
     center.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     center.address.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -229,6 +166,18 @@ export default function RecyclingCenters() {
                       </div>
                     </div>
                   </div>
+
+                  {selectedCenter.description && (
+                    <div className="mb-6">
+                      <div className="flex gap-3">
+                        <Info className="h-5 w-5 text-primary flex-shrink-0 mt-1" />
+                        <div>
+                          <div className="font-medium mb-1">About</div>
+                          <div className="text-muted-foreground">{selectedCenter.description}</div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   <div className="mb-6">
                     <h3 className="font-medium mb-2">Accepted Items</h3>

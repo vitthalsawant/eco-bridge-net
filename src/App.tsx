@@ -16,6 +16,7 @@ import SchedulePickupPage from "./pages/SchedulePickupPage";
 import DonateDevicePage from "./pages/DonateDevicePage";
 import TrackImpactPage from "./pages/TrackImpactPage";
 import Community from "./pages/Community";
+import ArticleView from "./pages/ArticleView";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/recycling-centers" element={<RecyclingCenters />} />
           <Route path="/education" element={<Education />} />
+          <Route path="/education/:id" element={<ArticleView />} />
           <Route path="/auth" element={<SimpleAuthPage />} />
           <Route path="/add-device" element={<AddDevicePage />} />
           <Route path="/devices" element={<DevicesPage />} />

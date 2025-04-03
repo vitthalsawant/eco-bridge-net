@@ -53,6 +53,10 @@
     @apply border-border;
   }
 
+  html, body {
+    @apply overflow-x-hidden min-h-screen w-full;
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
   }
@@ -64,11 +68,11 @@
 
 @layer components {
   .glass-panel {
-    @apply bg-white/80 backdrop-blur-xl border border-white/20 rounded-2xl shadow-sm;
+    @apply bg-white/80 backdrop-blur-xl border border-white/20 rounded-xl md:rounded-2xl shadow-sm;
   }
   
   .eco-button {
-    @apply relative inline-flex items-center justify-center px-6 py-3 overflow-hidden text-sm font-medium transition-all duration-300 ease-out rounded-full;
+    @apply relative inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 overflow-hidden text-sm font-medium transition-all duration-300 ease-out rounded-full;
   }
   
   .eco-button-primary {
@@ -107,8 +111,8 @@
 
 /* Custom scroll styling */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -122,4 +126,20 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive utilities */
+.responsive-padding {
+  @apply px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8;
+}
+
+.responsive-container {
+  @apply w-full max-w-7xl mx-auto;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .glass-panel {
+    @apply shadow-none border-0 bg-white/70;
+  }
 }

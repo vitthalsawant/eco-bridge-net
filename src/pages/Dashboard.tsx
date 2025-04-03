@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -106,28 +105,28 @@ export default function Dashboard() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex-grow pt-32 pb-20">
-        <Container>
-          <div className="flex justify-between items-center mb-8">
+      <main className="flex-grow pt-20 md:pt-24 pb-12">
+        <Container size="xl">
+          <div className="flex justify-between items-center mb-6 md:mb-8">
             <div>
-              <h1 className="text-3xl font-display font-semibold">Dashboard</h1>
-              <p className="text-muted-foreground">Welcome back, {userName}! Manage your e-waste activities.</p>
+              <h1 className="text-2xl md:text-3xl font-display font-semibold">Dashboard</h1>
+              <p className="text-muted-foreground text-sm md:text-base">Welcome back, {userName}! Manage your e-waste activities.</p>
             </div>
-            <div className="flex gap-3">
-              <Button variant="outline" size="icon" className="rounded-full">
+            <div className="flex gap-2 md:gap-3">
+              <Button variant="outline" size="icon" className="rounded-full h-8 w-8 md:h-10 md:w-10">
                 <Bell className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="icon" className="rounded-full">
+              <Button variant="outline" size="icon" className="rounded-full h-8 w-8 md:h-10 md:w-10">
                 <UserCircle className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="icon" className="rounded-full">
+              <Button variant="outline" size="icon" className="rounded-full h-8 w-8 md:h-10 md:w-10">
                 <Settings className="h-4 w-4" />
               </Button>
             </div>
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8">
             {[
               { 
                 title: 'Total Items Recycled', 
@@ -158,9 +157,9 @@ export default function Dashboard() {
                 isPositive: null
               },
             ].map((stat, i) => (
-              <div key={i} className="glass-panel p-6 rounded-2xl">
-                <div className="flex justify-between items-start mb-3">
-                  <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
+              <div key={i} className="glass-panel p-4 md:p-6 rounded-xl md:rounded-2xl">
+                <div className="flex justify-between items-start mb-2 md:mb-3">
+                  <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-muted flex items-center justify-center">
                     {stat.icon}
                   </div>
                   <span className={
@@ -171,23 +170,23 @@ export default function Dashboard() {
                     {stat.change}
                   </span>
                 </div>
-                <h3 className="text-muted-foreground font-medium text-sm">{stat.title}</h3>
-                <p className="text-2xl font-display font-semibold">{stat.value}</p>
+                <h3 className="text-muted-foreground font-medium text-xs md:text-sm">{stat.title}</h3>
+                <p className="text-xl md:text-2xl font-display font-semibold">{stat.value}</p>
               </div>
             ))}
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-4 md:gap-8">
             {/* Recent Activity */}
-            <div className="lg:col-span-2">
+            <div className="md:col-span-2">
               <ActivityFeed />
             </div>
 
             {/* Quick Actions */}
-            <div className="glass-panel rounded-2xl p-6">
-              <h2 className="text-xl font-display font-medium mb-6">Quick Actions</h2>
+            <div className="glass-panel rounded-xl md:rounded-2xl p-4 md:p-6">
+              <h2 className="text-lg md:text-xl font-display font-medium mb-4 md:mb-6">Quick Actions</h2>
               
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 {[
                   {
                     title: 'Schedule a Pickup',
@@ -217,16 +216,16 @@ export default function Dashboard() {
                   <Button 
                     key={i}
                     variant="outline" 
-                    className="w-full justify-start p-4 h-auto rounded-xl hover:bg-secondary"
+                    className="w-full justify-start p-3 md:p-4 h-auto rounded-lg md:rounded-xl hover:bg-secondary"
                     asChild
                   >
                     <Link to={action.link}>
-                      <div className="flex items-center gap-4">
-                        <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <div className="flex items-center gap-3 md:gap-4">
+                        <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-primary/10 flex items-center justify-center">
                           {action.icon}
                         </div>
                         <div className="text-left">
-                          <div className="font-medium">{action.title}</div>
+                          <div className="font-medium text-sm md:text-base">{action.title}</div>
                           <div className="text-xs text-muted-foreground">{action.description}</div>
                         </div>
                       </div>

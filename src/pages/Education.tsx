@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import { Container } from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Film, BookOpen, Search } from 'lucide-react';
+import { FileText, Film, BookOpen, Search, Disc } from 'lucide-react';
 import EducationCard from '@/components/EducationCard';
 import { Input } from '@/components/ui/input';
 
@@ -17,15 +17,15 @@ type EducationItem = {
   image: string;
   category: string;
   readTime: string;
-  type: 'article' | 'video' | 'guide';
+  type: 'article' | 'video' | 'guide' | 'cd-guide';
 };
 
 // Mock data for educational content with proper typing
 const educationItems: EducationItem[] = [
   {
     id: 1,
-    title: 'The Environmental Impact of E-Waste',
-    description: 'Learn about how improper e-waste disposal affects our environment and what you can do to help.',
+    title: 'The Environmental Impact of E-Waste in India',
+    description: 'Learn about how improper e-waste disposal affects India\'s environment and what citizens can do to help.',
     image: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=3270&auto=format&fit=crop',
     category: 'Environment',
     readTime: '5 min read',
@@ -34,7 +34,7 @@ const educationItems: EducationItem[] = [
   {
     id: 2,
     title: 'How to Prepare Your Devices for Recycling',
-    description: 'A step-by-step guide on how to properly prepare your electronics for recycling.',
+    description: 'A step-by-step guide on how to properly prepare your electronics for recycling in Mumbai.',
     image: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=3201&auto=format&fit=crop',
     category: 'Guides',
     readTime: '3 min read',
@@ -42,8 +42,8 @@ const educationItems: EducationItem[] = [
   },
   {
     id: 3,
-    title: 'Inside an E-Waste Recycling Facility',
-    description: 'Take a virtual tour of a modern e-waste recycling facility and see how devices are processed.',
+    title: 'Inside an E-Waste Recycling Facility in Mumbai',
+    description: 'Take a virtual tour of a modern e-waste recycling facility in Mumbai and see how devices are processed.',
     image: 'https://images.unsplash.com/photo-1611284446314-60a58ac0dade?q=80&w=3270&auto=format&fit=crop',
     category: 'Behind the Scenes',
     readTime: '8 min watch',
@@ -60,8 +60,8 @@ const educationItems: EducationItem[] = [
   },
   {
     id: 5,
-    title: 'E-Waste Management Laws Around the World',
-    description: 'Compare different e-waste legislation and policies from countries leading in sustainable practices.',
+    title: 'E-Waste Management Laws in Maharashtra',
+    description: 'Compare different e-waste legislation and policies from Maharashtra state focusing on Mumbai region.',
     image: 'https://images.unsplash.com/photo-1589758438368-0ad531db3366?q=80&w=2932&auto=format&fit=crop',
     category: 'Policy',
     readTime: '10 min read',
@@ -97,18 +97,45 @@ const educationItems: EducationItem[] = [
   {
     id: 9,
     title: 'Corporate E-Waste Management Strategies',
-    description: 'Case studies of businesses implementing successful e-waste management programs.',
+    description: 'Case studies of businesses in Mumbai implementing successful e-waste management programs.',
     image: 'https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?q=80&w=2940&auto=format&fit=crop',
     category: 'Business',
     readTime: '9 min read',
     type: 'article'
+  },
+  {
+    id: 10,
+    title: 'CD Guide: Recycling Old CDs and DVDs',
+    description: 'Learn how to properly recycle your old CDs, DVDs, and optical media to reduce e-waste.',
+    image: 'https://images.unsplash.com/photo-1594114170672-2201e6721c2a?q=80&w=2942&auto=format&fit=crop',
+    category: 'Media Disposal',
+    readTime: '6 min read',
+    type: 'cd-guide'
+  },
+  {
+    id: 11,
+    title: 'CD Guide: Repurposing Old Optical Media',
+    description: 'Creative ways to repurpose and upcycle your old CDs and DVDs into art and useful items.',
+    image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=1974&auto=format&fit=crop',
+    category: 'DIY',
+    readTime: '8 min read',
+    type: 'cd-guide'
+  },
+  {
+    id: 12,
+    title: 'Mumbai\'s E-Waste Collection Points',
+    description: 'A comprehensive video guide to all the e-waste collection points across Mumbai city.',
+    image: 'https://images.unsplash.com/photo-1605600659873-d808a13e4d9a?q=80&w=3000&auto=format&fit=crop',
+    category: 'Local Resources',
+    readTime: '15 min watch',
+    type: 'video'
   }
 ];
 
-const categories = ['All', 'Environment', 'Guides', 'Security', 'Policy', 'DIY', 'Business', 'Education'];
+const categories = ['All', 'Environment', 'Guides', 'Security', 'Policy', 'DIY', 'Business', 'Education', 'Media Disposal', 'Local Resources'];
 
 export default function Education() {
-  const [activeTab, setActiveTab] = useState<'all' | 'article' | 'video' | 'guide'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'article' | 'video' | 'guide' | 'cd-guide'>('all');
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -132,7 +159,7 @@ export default function Education() {
               Educational Resources
             </h1>
             <p className="text-lg text-muted-foreground max-w-3xl">
-              Explore our collection of articles, videos, and guides to learn more about e-waste management and sustainable practices.
+              Explore our collection of articles, videos, guides and more to learn about e-waste management and sustainable practices in Mumbai and beyond.
             </p>
           </div>
 
@@ -147,8 +174,8 @@ export default function Education() {
               />
             </div>
 
-            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'all' | 'article' | 'video' | 'guide')}>
-              <TabsList className="grid grid-cols-4 mb-6">
+            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'all' | 'article' | 'video' | 'guide' | 'cd-guide')}>
+              <TabsList className="grid grid-cols-5 mb-6">
                 <TabsTrigger value="all" className="flex items-center gap-2">
                   All Resources
                 </TabsTrigger>
@@ -163,6 +190,10 @@ export default function Education() {
                 <TabsTrigger value="guide" className="flex items-center gap-2">
                   <BookOpen className="h-4 w-4" />
                   Guides
+                </TabsTrigger>
+                <TabsTrigger value="cd-guide" className="flex items-center gap-2">
+                  <Disc className="h-4 w-4" />
+                  CD Guides
                 </TabsTrigger>
               </TabsList>
             </Tabs>

@@ -15,6 +15,7 @@ import DevicesPage from "./pages/DevicesPage";
 import SchedulePickupPage from "./pages/SchedulePickupPage";
 import DonateDevicePage from "./pages/DonateDevicePage";
 import TrackImpactPage from "./pages/TrackImpactPage";
+import Community from "./pages/Community";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/schedule-pickup" element={<SchedulePickupPage />} />
           <Route path="/donate-device" element={<DonateDevicePage />} />
           <Route path="/track-impact" element={<TrackImpactPage />} />
+          <Route path="/community" element={<Community />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
@@ -15,9 +14,9 @@ const navLinks = [
     name: 'Services', 
     path: '#',
     dropdown: [
-      { name: 'Schedule Pickup', path: '/services/pickup' },
-      { name: 'Donate Devices', path: '/services/donate' },
-      { name: 'Track E-Waste', path: '/services/track' }
+      { name: 'Schedule Pickup', path: '/schedule-pickup' },
+      { name: 'Donate Devices', path: '/donate-device' },
+      { name: 'Track Impact', path: '/track-impact' }
     ]
   },
   { name: 'Community', path: '/community' }
@@ -189,4 +188,4 @@ export default function Navbar() {
       </Container>
     </header>
   );
-};
+}

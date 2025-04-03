@@ -7,67 +7,67 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { MapPin, Filter, Search, Navigation, Phone, Clock, CheckCircle, Award } from 'lucide-react';
 
-// Mock data for recycling centers
+// Mock data for recycling centers in Mumbai
 const centers = [
   {
     id: 1,
-    name: 'GreenTech Recycling Center',
-    address: '123 Eco Street, San Francisco, CA 94103',
-    phone: '(415) 555-1234',
-    hours: 'Mon-Fri: 8am-6pm, Sat: 9am-4pm',
-    distance: '1.2 miles',
-    certifications: ['e-Stewards', 'R2'],
-    acceptedItems: ['Computers', 'Phones', 'Tablets', 'TVs', 'Printers'],
-    rating: 4.8,
-    reviews: 156
+    name: 'Mumbai E-Waste Recyclers',
+    address: '42 Andheri East, Mumbai, Maharashtra 400069',
+    phone: '(022) 2835-6789',
+    hours: 'Mon-Fri: 9am-6pm, Sat: 10am-4pm',
+    distance: '1.5 km',
+    certifications: ['MPCB Certified', 'ISO 14001'],
+    acceptedItems: ['Computers', 'Phones', 'Tablets', 'TVs', 'Batteries'],
+    rating: 4.7,
+    reviews: 132
   },
   {
     id: 2,
-    name: 'Circular Electronics',
-    address: '456 Recycle Ave, San Francisco, CA 94105',
-    phone: '(415) 555-5678',
-    hours: 'Mon-Sat: 9am-7pm',
-    distance: '2.8 miles',
-    certifications: ['R2'],
-    acceptedItems: ['Computers', 'Phones', 'Batteries', 'Cables'],
+    name: 'Green Mumbai Recycling',
+    address: '78 Parel, Lower Parel, Mumbai, Maharashtra 400012',
+    phone: '(022) 2492-3456',
+    hours: 'Mon-Sat: 8am-7pm',
+    distance: '3.2 km',
+    certifications: ['CPCB Authorized'],
+    acceptedItems: ['All Electronics', 'Batteries', 'Cables', 'Light Bulbs'],
     rating: 4.5,
-    reviews: 78
+    reviews: 96
   },
   {
     id: 3,
-    name: 'EcoSystems Recovery',
-    address: '789 Sustainable Blvd, Oakland, CA 94612',
-    phone: '(510) 555-9012',
-    hours: 'Mon-Fri: 7am-8pm, Sat-Sun: 10am-4pm',
-    distance: '5.4 miles',
-    certifications: ['e-Stewards', 'ISO 14001'],
-    acceptedItems: ['All Electronics', 'Batteries', 'Light Bulbs'],
-    rating: 4.9,
-    reviews: 210
+    name: 'EcoTech Solutions',
+    address: '105 Worli, Mumbai, Maharashtra 400018',
+    phone: '(022) 2438-9012',
+    hours: 'Mon-Fri: 9am-5pm, Sat-Sun: 10am-3pm',
+    distance: '4.8 km',
+    certifications: ['MPCB Certified', 'E-Waste Handler'],
+    acceptedItems: ['Computers', 'Mobiles', 'Printers', 'Batteries'],
+    rating: 4.8,
+    reviews: 185
   },
   {
     id: 4,
-    name: 'Bay Area Electronics Recycling',
-    address: '321 Green Ave, Berkeley, CA 94710',
-    phone: '(510) 555-3456',
-    hours: 'Mon-Fri: 9am-5pm',
-    distance: '7.1 miles',
-    certifications: ['ISO 14001'],
-    acceptedItems: ['Computers', 'Monitors', 'Printers', 'Small Appliances'],
-    rating: 4.3,
-    reviews: 42
+    name: 'Dharavi Recycling Center',
+    address: '23 Dharavi, Mumbai, Maharashtra 400017',
+    phone: '(022) 2513-7890',
+    hours: 'Mon-Sat: 8am-8pm',
+    distance: '6.3 km',
+    certifications: ['Community Certified'],
+    acceptedItems: ['All Electronics', 'Household Appliances'],
+    rating: 4.2,
+    reviews: 67
   },
   {
     id: 5,
-    name: 'Sustainable Solutions Inc',
-    address: '555 Recycler Lane, San Jose, CA 95112',
-    phone: '(408) 555-7890',
-    hours: 'Mon-Sat: 10am-8pm',
-    distance: '12.8 miles',
-    certifications: ['e-Stewards', 'R2', 'ISO 14001'],
-    acceptedItems: ['All Electronics', 'Batteries', 'Light Bulbs', 'Appliances'],
-    rating: 4.7,
-    reviews: 186
+    name: 'Navi Mumbai E-Waste Management',
+    address: '56 Vashi, Navi Mumbai, Maharashtra 400703',
+    phone: '(022) 2789-4561',
+    hours: 'Mon-Fri: 9am-6pm',
+    distance: '12.7 km',
+    certifications: ['MPCB Certified', 'ISO 9001', 'ISO 14001'],
+    acceptedItems: ['Computers', 'Servers', 'Networking Equipment', 'Industrial Electronics'],
+    rating: 4.9,
+    reviews: 204
   }
 ];
 
@@ -88,10 +88,10 @@ export default function RecyclingCenters() {
         <Container>
           <div className="mb-10">
             <h1 className="text-4xl font-display font-semibold mb-4">
-              Find Recycling Centers
+              Find Recycling Centers in Mumbai
             </h1>
             <p className="text-lg text-muted-foreground max-w-3xl">
-              Locate certified e-waste recycling facilities in your area. These centers properly handle electronic waste to minimize environmental impact.
+              Locate certified e-waste recycling facilities in the Mumbai region. These centers properly handle electronic waste to minimize environmental impact.
             </p>
           </div>
 
@@ -114,7 +114,7 @@ export default function RecyclingCenters() {
                 </div>
 
                 <div className="text-sm text-muted-foreground mb-2">
-                  {filteredCenters.length} centers found
+                  {filteredCenters.length} centers found in Mumbai region
                 </div>
 
                 <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
@@ -169,7 +169,7 @@ export default function RecyclingCenters() {
                 <div className="relative bg-gray-200 h-[300px] animate-pulse">
                   {/* This would be replaced with an actual map component */}
                   <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-                    Interactive Map (Placeholder)
+                    Interactive Map of Mumbai Region (Placeholder)
                   </div>
                 </div>
 

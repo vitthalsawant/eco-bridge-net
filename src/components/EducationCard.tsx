@@ -2,7 +2,6 @@
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Link } from 'react-router-dom';
 
 interface EducationCardProps {
   title: string;
@@ -10,7 +9,7 @@ interface EducationCardProps {
   image: string;
   category: string;
   readTime: string;
-  type: 'article' | 'video' | 'guide' | 'cd-guide';
+  type: 'article' | 'video' | 'guide';
   className?: string;
   id?: number;
 }
@@ -23,7 +22,6 @@ export default function EducationCard({
   readTime,
   type,
   className,
-  id,
 }: EducationCardProps) {
   return (
     <div 
@@ -43,7 +41,6 @@ export default function EducationCard({
             "inline-block px-3 py-1 rounded-full text-xs font-medium",
             type === 'article' ? "bg-blue-100 text-blue-600" :
             type === 'video' ? "bg-red-100 text-red-600" :
-            type === 'cd-guide' ? "bg-amber-100 text-amber-600" :
             "bg-purple-100 text-purple-600"
           )}>
             {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -58,9 +55,9 @@ export default function EducationCard({
         </div>
         <h3 className="font-display font-medium text-xl mb-2">{title}</h3>
         <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{description}</p>
-        <Link to={`/education/${id}`} className="flex items-center text-primary text-sm font-medium group-hover:gap-2 transition-all">
+        <div className="flex items-center text-primary text-sm font-medium group-hover:gap-2 transition-all">
           Read more <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-        </Link>
+        </div>
       </div>
     </div>
   );

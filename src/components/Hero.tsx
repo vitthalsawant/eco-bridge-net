@@ -71,8 +71,8 @@ export default function Hero() {
                 {/* Main image */}
                 <div className="glass-panel overflow-hidden p-2 rounded-[2rem] shadow-xl animate-scale-in">
                   <img 
-                    src="https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?q=80&w=3201&auto=format&fit=crop"
-                    alt="E-waste recycling" 
+                    src="https://images.unsplash.com/photo-1603400521630-9f2de124b33b?q=80&w=1000&auto=format&fit=crop"
+                    alt="E-waste recycling visualization" 
                     className="w-full h-auto rounded-[1.8rem] object-cover"
                   />
                 </div>

@@ -5,14 +5,77 @@ import Footer from '@/components/Footer';
 import { Container } from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { MapPin, Filter, Search, Navigation, Phone, Clock, CheckCircle, Award, Info } from 'lucide-react';
-import { recyclingCenters } from '@/data/education-data';
+import { MapPin, Filter, Search, Navigation, Phone, Clock, CheckCircle, Award } from 'lucide-react';
+
+// Mock data for recycling centers
+const centers = [
+  {
+    id: 1,
+    name: 'GreenTech Recycling Center',
+    address: '123 Eco Street, San Francisco, CA 94103',
+    phone: '(415) 555-1234',
+    hours: 'Mon-Fri: 8am-6pm, Sat: 9am-4pm',
+    distance: '1.2 miles',
+    certifications: ['e-Stewards', 'R2'],
+    acceptedItems: ['Computers', 'Phones', 'Tablets', 'TVs', 'Printers'],
+    rating: 4.8,
+    reviews: 156
+  },
+  {
+    id: 2,
+    name: 'Circular Electronics',
+    address: '456 Recycle Ave, San Francisco, CA 94105',
+    phone: '(415) 555-5678',
+    hours: 'Mon-Sat: 9am-7pm',
+    distance: '2.8 miles',
+    certifications: ['R2'],
+    acceptedItems: ['Computers', 'Phones', 'Batteries', 'Cables'],
+    rating: 4.5,
+    reviews: 78
+  },
+  {
+    id: 3,
+    name: 'EcoSystems Recovery',
+    address: '789 Sustainable Blvd, Oakland, CA 94612',
+    phone: '(510) 555-9012',
+    hours: 'Mon-Fri: 7am-8pm, Sat-Sun: 10am-4pm',
+    distance: '5.4 miles',
+    certifications: ['e-Stewards', 'ISO 14001'],
+    acceptedItems: ['All Electronics', 'Batteries', 'Light Bulbs'],
+    rating: 4.9,
+    reviews: 210
+  },
+  {
+    id: 4,
+    name: 'Bay Area Electronics Recycling',
+    address: '321 Green Ave, Berkeley, CA 94710',
+    phone: '(510) 555-3456',
+    hours: 'Mon-Fri: 9am-5pm',
+    distance: '7.1 miles',
+    certifications: ['ISO 14001'],
+    acceptedItems: ['Computers', 'Monitors', 'Printers', 'Small Appliances'],
+    rating: 4.3,
+    reviews: 42
+  },
+  {
+    id: 5,
+    name: 'Sustainable Solutions Inc',
+    address: '555 Recycler Lane, San Jose, CA 95112',
+    phone: '(408) 555-7890',
+    hours: 'Mon-Sat: 10am-8pm',
+    distance: '12.8 miles',
+    certifications: ['e-Stewards', 'R2', 'ISO 14001'],
+    acceptedItems: ['All Electronics', 'Batteries', 'Light Bulbs', 'Appliances'],
+    rating: 4.7,
+    reviews: 186
+  }
+];
 
 export default function RecyclingCenters() {
-  const [selectedCenter, setSelectedCenter] = useState(recyclingCenters[0]);
+  const [selectedCenter, setSelectedCenter] = useState(centers[0]);
   const [searchTerm, setSearchTerm] = useState('');
   
-  const filteredCenters = recyclingCenters.filter(center => 
+  const filteredCenters = centers.filter(center => 
     center.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     center.address.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -25,10 +88,10 @@ export default function RecyclingCenters() {
         <Container>
           <div className="mb-10">
             <h1 className="text-4xl font-display font-semibold mb-4">
-              Find Recycling Centers in Mumbai
+              Find Recycling Centers
             </h1>
             <p className="text-lg text-muted-foreground max-w-3xl">
-              Locate certified e-waste recycling facilities in the Mumbai region. These centers properly handle electronic waste to minimize environmental impact.
+              Locate certified e-waste recycling facilities in your area. These centers properly handle electronic waste to minimize environmental impact.
             </p>
           </div>
 
@@ -51,7 +114,7 @@ export default function RecyclingCenters() {
                 </div>
 
                 <div className="text-sm text-muted-foreground mb-2">
-                  {filteredCenters.length} centers found in Mumbai region
+                  {filteredCenters.length} centers found
                 </div>
 
                 <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
@@ -106,7 +169,7 @@ export default function RecyclingCenters() {
                 <div className="relative bg-gray-200 h-[300px] animate-pulse">
                   {/* This would be replaced with an actual map component */}
                   <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-                    Interactive Map of Mumbai Region (Placeholder)
+                    Interactive Map (Placeholder)
                   </div>
                 </div>
 
@@ -166,18 +229,6 @@ export default function RecyclingCenters() {
                       </div>
                     </div>
                   </div>
-
-                  {selectedCenter.description && (
-                    <div className="mb-6">
-                      <div className="flex gap-3">
-                        <Info className="h-5 w-5 text-primary flex-shrink-0 mt-1" />
-                        <div>
-                          <div className="font-medium mb-1">About</div>
-                          <div className="text-muted-foreground">{selectedCenter.description}</div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
 
                   <div className="mb-6">
                     <h3 className="font-medium mb-2">Accepted Items</h3>

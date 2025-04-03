@@ -23,7 +23,7 @@ export function Container({
           "max-w-screen-sm": size === "sm",
           "max-w-screen-md": size === "md", 
           "max-w-screen-lg": size === "lg",
-          "max-w-full lg:max-w-[90%] xl:max-w-[85%] 2xl:max-w-[1400px]": size === "xl",
+          "max-w-full lg:max-w-[95%] xl:max-w-[90%] 2xl:max-w-[1400px]": size === "xl",
           "max-w-full": size === "full",
         },
         className

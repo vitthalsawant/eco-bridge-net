@@ -143,3 +143,8 @@
     @apply shadow-none border-0 bg-white/70;
   }
 }
+
+/* Add extra small screen size utility */
+@screen xs {
+  /* Extra small screen specific styles */
+}

@@ -18,12 +18,12 @@ export function Container({
   return (
     <Component
       className={cn(
-        "mx-auto w-full px-4 sm:px-6 lg:px-8",
+        "mx-auto w-full px-4 sm:px-6",
         {
           "max-w-screen-sm": size === "sm",
-          "max-w-screen-md": size === "md",
+          "max-w-screen-md": size === "md", 
           "max-w-screen-lg": size === "lg",
-          "max-w-screen-xl": size === "xl",
+          "max-w-full lg:max-w-[90%] xl:max-w-[85%] 2xl:max-w-[1400px]": size === "xl",
           "max-w-full": size === "full",
         },
         className

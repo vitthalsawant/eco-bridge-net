@@ -10,7 +10,7 @@ const DevicesPage = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex-grow pt-20 md:pt-24 pb-12">
+      <main className="flex-grow pt-16 md:pt-20 pb-8 md:pb-12 w-full">
         <Container size="xl">
           <h1 className="text-2xl md:text-3xl font-display font-semibold mb-6">My Devices</h1>
           <DevicesList />

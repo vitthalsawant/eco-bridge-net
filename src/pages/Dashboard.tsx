@@ -105,28 +105,28 @@ export default function Dashboard() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex-grow pt-20 md:pt-24 pb-12">
+      <main className="flex-grow pt-16 md:pt-20 pb-8 md:pb-12 w-full">
         <Container size="xl">
-          <div className="flex justify-between items-center mb-6 md:mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
             <div>
               <h1 className="text-2xl md:text-3xl font-display font-semibold">Dashboard</h1>
               <p className="text-muted-foreground text-sm md:text-base">Welcome back, {userName}! Manage your e-waste activities.</p>
             </div>
-            <div className="flex gap-2 md:gap-3">
-              <Button variant="outline" size="icon" className="rounded-full h-8 w-8 md:h-10 md:w-10">
+            <div className="flex gap-2">
+              <Button variant="outline" size="icon" className="rounded-full h-8 w-8 md:h-9 md:w-9">
                 <Bell className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="icon" className="rounded-full h-8 w-8 md:h-10 md:w-10">
+              <Button variant="outline" size="icon" className="rounded-full h-8 w-8 md:h-9 md:w-9">
                 <UserCircle className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="icon" className="rounded-full h-8 w-8 md:h-10 md:w-10">
+              <Button variant="outline" size="icon" className="rounded-full h-8 w-8 md:h-9 md:w-9">
                 <Settings className="h-4 w-4" />
               </Button>
             </div>
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8">
+          <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
             {[
               { 
                 title: 'Total Items Recycled', 
@@ -176,7 +176,7 @@ export default function Dashboard() {
             ))}
           </div>
 
-          <div className="grid md:grid-cols-3 gap-4 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {/* Recent Activity */}
             <div className="md:col-span-2">
               <ActivityFeed />
